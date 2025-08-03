@@ -17,6 +17,7 @@ setting =loads(open(
     "r",
     encoding="utf-8"
     ).read())
+
 name = setting["username"]
 password = setting["password"]
 url_login_captcha = "https://open-service.codemao.cn/captcha/rule/v3"
@@ -50,7 +51,7 @@ with open("data/content.txt", "r",encoding="utf-8") as f_comment:
 comment_list=f_content.split("\n")
 #预处理一下该列表
 comment_list = ["[自动评论] (不喜可删)"+what for what in comment_list if 1]
-#print(comment_list)
+
 #作者的id和其他白名单成员
 baimingdan=[
     816081061,
@@ -84,12 +85,12 @@ if response_login.status_code == 200:#登录成功
                         continue
                 """
                 #查看作品本身是否已点赞
-                url_work_creation_tools = "https://api.codemao.cn/creation-tools/v1/works/"+work_id#生成url
+                url_work_creation_tools = f"https://api.codemao.cn/creation-tools/v1/works/{work_id}"#生成url
                 response_work_creation_tools = session.get(url=url_work_creation_tools,headers=headers)#得到response
                 is_like = response_work_creation_tools.json()["abilities"]["is_praised"]#查看是否已点赞
                 #点过赞就不点了
                 if is_like:
-                    print("作品id为{}的作品已点赞，不予评论点赞".format(work_id))
+                    print(f"作品id为{work_id}的作品已点赞，不予评论点赞")
                     continue
                 work_name = str( newwork_count ["work_name"] )
                 nickname  = str( newwork_count ["nickname" ] )
@@ -100,21 +101,21 @@ if response_login.status_code == 200:#登录成功
                 data_comment = dumps({'emoji_content': "", 'content':what})
                 #评论
                 if int(user_id) in baimingdan:
-                    print("编号为 "+work_id+' 的作者在白名单内，不予评论')
+                    print(f"编号为 {work_id} 的作者在白名单内，不予评论")
                     continue
-                url_comment = 'https://api.codemao.cn/creation-tools/v1/works/'+work_id+'/comment'
+                url_comment = f'https://api.codemao.cn/creation-tools/v1/works/{work_id}/comment'
                 response_comment = session.post(url=url_comment, headers=headers,data=data_comment)
                 status_code_comment = response_comment.status_code
                 if 199 < status_code_comment < 300:
-                    print("编号为 "+work_id+' 的作品评论成功')
+                    print(f"编号为{work_id} 的作品评论成功")
                     count+=1
                 else:
-                    print("编号为 "+work_id+' 的作品评论失败,状态码'+str(status_code_comment))
+                    print(f"编号为 {work_id} 的作品评论失败,状态码{status_code_comment}")
                     print("详情:",response_comment.text)
                     sleep(5)
                     continue
                 #点赞
-                url_like="https://api.codemao.cn/nemo/v2/works/"+work_id+"/like"
+                url_like = f"https://api.codemao.cn/nemo/v2/works/{work_id}/like"
                 response_like = session.post(url=url_like,headers=headers)
                 #print("点赞状态",response_like.status_code)
                 #记录作品id到已点赞id记录文件
