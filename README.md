@@ -17,31 +17,28 @@
 
 ### 2.获取源代码
 
-    使用`Git`从 https://github.com/lgz1111/Auto_comments.git 克隆仓库到本地。
-    ```Shell
+使用`Git`从 https://github.com/lgz1111/Auto_comments.git 克隆仓库到本地。
+
     git clone https://github.com/lgz1111/Auto_comments.git
-    ```
-    如果你没有安装requests，请安装
-    ```Shell
+
+如果你没有安装requests，请安装
+
     pip install requests
-    ```
 
 或点击[这里](https://github.com/lgz1111/Auto_comments/archive/refs/heads/main.zip)下载压缩包文件。下载完成后解压文件。
 
 ### 3.填写setting.json文件
 
-    在data文件夹下创建setting.json文件，将你的用户名和密码填到对应位置。
+在data文件夹下创建setting.json文件，将你的用户名和密码填到对应位置。
 
-    (参照setting.json.example)
-    ```JSON
+(参照setting.json.example)
+
+    //seeting.json
     {
         "username":"YOUR-PHONE-NUMBER-or-YOUR-USERNME",
         "password":"YOUR-PASSWORD"
     }
-    ```
 
 ### 4.运行main.py
 
-    ```Shell
     python main.py
-    ```
